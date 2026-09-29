@@ -1,0 +1,15 @@
+services:
+  php:
+    build: ./php
+    ports:
+      - "8080:80"
+
+  node:
+    build: ./node
+    ports:
+      - "3000:3000"
+
+  python:
+    build: ./python
+    ports:
+      - "5000:5000"
