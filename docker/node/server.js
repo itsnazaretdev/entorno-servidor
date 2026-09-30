@@ -1,16 +1,17 @@
-// app.js
-import express from "express"; // traemos la herramienta Express
-const app = express(); // creamos nuestra aplicacion
+import express from "express";
 
-// Cuando llegue una peticion GET a la raiz "/", respondemos con un texto
+const app = express();
+
+app.set("view engine", "ejs");
+
 app.get("/", (req, res) => {
-  res.send("Hola, mundo desde Node");
+  res.render("saludo");
 });
 
-// Cuando llegue una peticion GET a "/productos", respondemos con un texto
 app.get("/productos", (req, res) => {
   res.send("Hola, desde productos");
 });
 
-// Ponemos el servidor a escuchar en el puerto 3000
-app.listen(3000);
+app.listen(3000, "0.0.0.0", () => {
+  console.log("Servidor funcionando");
+});

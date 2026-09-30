@@ -6,6 +6,7 @@ COPY package.json ./
 RUN npm install
 
 COPY server.js ./
+COPY views ./views
 
 EXPOSE 3000
 
