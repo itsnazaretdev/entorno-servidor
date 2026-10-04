@@ -4,13 +4,14 @@ const app = express();
 
 app.set("view engine", "ejs");
 
-app.get("/", (req, res) => {
-  res.render("saludo");
+app.get("/producto", (req, res) => {
+  res.render("producto", {
+    nombre: "Teclado mecanico",
+    precio: 79.90,
+    hayStock: true
+  });
 });
 
-app.get("/productos", (req, res) => {
-  res.send("Hola, desde productos");
-});
 
 app.listen(3000, "0.0.0.0", () => {
   console.log("Servidor funcionando");
