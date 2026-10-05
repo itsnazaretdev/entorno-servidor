@@ -6,10 +6,9 @@
 </head>
 <body>
 
-    <!-- Saludo embebido en PHP -->
-    <h1><?php echo "¡Hola! Este es un saludo enviado desde PHP."; ?></h1>
 
-    <!-- Cálculo simple realizado en el servidor -->
+    <h1><?php echo "¡Hola! Este es un saludo enviado desde PHP."; ?></h1>
+    
     <p>El resultado de 2 + 2 es: <?php echo 2 + 2; ?></p>
 
 </body>

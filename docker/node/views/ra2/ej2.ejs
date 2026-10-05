@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 2 - EJS</title>
+</head>
+<body>
+
+    <!-- Bloque 1: HTML fijo -->
+    <h2>Texto en HTML puro</h2>
+    <p>Este párrafo es HTML fijo en el cliente.</p>
+
+    <!-- Bloque 2: Código JS en EJS para declarar una variable (no imprime nada) -->
+    <% const mensaje = "Este mensaje fue procesado en Node/EJS."; %>
+
+    <!-- Bloque 3: Salida del contenido usando <%= %> -->
+    <p><strong><%= mensaje %></strong></p>
+
+    <!-- Bloque 4: Volvemos a HTML puro -->
+    <p>Volvemos a estar en HTML fijo.</p>
+
+    <!-- Bloque 5: Lógica con condición -->
+    <% if (true) { %>
+        <p>Entramos a EJS para evaluar una condición e imprimimos este HTML dentro.</p>
+    <% } %>
+
+</body>
+</html>
