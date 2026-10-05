@@ -12,6 +12,10 @@ app.get("/producto", (req, res) => {
   });
 });
 
+app.get("/ra2", (req, res) => {
+  res.render("ra2/ej1");
+});
+
 
 app.listen(3000, "0.0.0.0", () => {
   console.log("Servidor funcionando");
