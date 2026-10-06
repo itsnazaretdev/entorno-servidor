@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 8 — Catálogo Manual</title>
+    <style>
+        .ficha {
+            border: 1px solid #ccc;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Catálogo de Libros (Repetición Manual)</h1>
+
+    <!-- Bloque 1 -->
+    <div class="ficha">
+        <h2><%= libro1.titulo %></h2>
+        <p><strong>Autor:</strong> <%= libro1.autor %></p>
+        <p><strong>Precio (IVA incl.):</strong> <%= precioIVA1 %> €</p>
+        <p><strong>Estado:</strong> <%= estado1 %></p>
+    </div>
+
+    <!-- Bloque 2 (Copiado y pegado a mano) -->
+    <div class="ficha">
+        <h2><%= libro2.titulo %></h2>
+        <p><strong>Autor:</strong> <%= libro2.autor %></p>
+        <p><strong>Precio (IVA incl.):</strong> <%= precioIVA2 %> €</p>
+        <p><strong>Estado:</strong> <%= estado2 %></p>
+    </div>
+
+    <!-- Bloque 3 (Copiado y pegado a mano) -->
+    <div class="ficha">
+        <h2><%= libro3.titulo %></h2>
+        <p><strong>Autor:</strong> <%= libro3.autor %></p>
+        <p><strong>Precio (IVA incl.):</strong> <%= precioIVA3 %> €</p>
+        <p><strong>Estado:</strong> <%= estado3 %></p>
+    </div>
+
+    <!-- Anotación del ejercicio -->
+    <section style="background-color: #fff3cd; padding: 10px; margin-top: 20px;">
+        <h3>Anotación / Reflexión:</h3>
+        <p>
+            <strong>Inconvenientes observados:</strong><br>
+            1. <strong>Mantenimiento pesado:</strong> Si decidimos cambiar el diseño (por ejemplo, envolver el autor en una etiqueta &lt;em&gt;), tenemos que modificar el código N veces.<br>
+            2. <strong>Error humano:</strong> Es facilísimo olvidar cambiar una variable (por ejemplo, poner <code>libro1.autor</code> en la ficha 2 por despiste).<br>
+            3. <strong>Falta de escalabilidad:</strong> Si el catálogo pasa a tener 50 libros, el código del servidor y de la vista se vuelve inmanejable.
+        </p>
+    </section>
+</body>
+</html>
