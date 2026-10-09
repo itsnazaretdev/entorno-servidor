@@ -9,7 +9,7 @@
 
     <h1><?php echo "¡Hola! Este es un saludo enviado desde PHP."; ?></h1>
     
-    <p>El resultado de 2 + 2 es: <?php echo 2 + 2; ?></p>
+    <p>El resultado de 2 + 2 es: <?php echo 2 + 2; ?></p> 
 
 </body>
 </html>

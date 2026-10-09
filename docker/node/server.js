@@ -55,8 +55,7 @@ app.get("/ra2/bloque1/ej5", (req, res) => {
 });
 
 
-// Ejercicio 6 — La ficha de un libro
-// Ejercicio 6 (Estricto: variables sueltas, sin objeto)
+// Ejercicio 6 
 app.get("/ra2/bloque2/ej6", (req, res) => {
     // Variables sueltas
     const titulo = "Cien años de soledad";
@@ -79,7 +78,6 @@ app.get("/ra2/bloque2/ej6", (req, res) => {
 });
 
 // Ejercicio 7
-// Ejercicio 7 — Los datos en una estructura
 app.get("/ra2/bloque2/ej7", (req, res) => {
     // Agrupamos en una estructura (Objeto)
     const libro = {
