@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha del Libro</title>
+</head>
+<body>
+
+    <div class="tarjeta">
+        <!-- Mostramos las variables del objeto libro -->
+        <h2><%= libro.nombre %></h2>
+        <p><%= libro.categoria %></p>
+        <p><%= libro.precio %> €</p>
+
+        <!-- Condicionales en EJS -->
+        <% if (libro.disponible) { %>
+            <button>Añadir al carrito</button>
+        <% } else { %>
+            <p>No disponible</p>
+        <% } %>
+
+        <!-- Cálculo del IVA -->
+        <p class="precioIva">IVA incluido: <%= (libro.precio * 1.21).toFixed(2) %> €</p>
+    </div>
+
+    <!-- Comportamiento condicional según el entorno (Ejercicio 10 en la vista) -->
+    <% if (entorno === 'development') { %>
+        <p style="color: gray; font-size: 12px;">[Aviso de desarrollo: Estás viendo la versión local de prueba]</p>
+    <% } %>
+
+</body>
+</html>

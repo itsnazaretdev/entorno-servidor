@@ -149,6 +149,31 @@ app.get("/ra2/bloque2/ej9", (req, res) => {
     });
 });
 
+//Ejercicio 10
+const entorno = process.env.NODE_ENV || 'development';
+
+app.get('/ra2/bloque3/ej10', (req, res) => {
+    // Datos de ejemplo para la ficha del libro (Ejercicio 11)
+    const libro = {
+        nombre: "El Quijote",
+        categoria: "Novela",
+        precio: 20.00,
+        disponible: true
+    };
+
+    // Comportamiento dinámico según el entorno (Ejercicio 10)
+    if (entorno === 'production') {
+        console.log("Servidor en producción: ejecutando optimizaciones...");
+    } else {
+        console.log("Servidor en desarrollo: modo depuración activo.");
+    }
+
+    // Renderizamos la plantilla separada enviándole los datos y el entorno
+    res.render('libro', { libro, entorno });
+});
+
+
+
 app.listen(3000, "0.0.0.0", () => {
   console.log("Servidor funcionando en http://localhost:3000");
 });
