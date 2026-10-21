@@ -1,0 +1,13 @@
+<%- include('../partials/header', { title, user, message }) %>
+<section class="form-card">
+  <h1><%= title %></h1>
+  <% if (errors.length) { %><div class="alert error"><ul><% errors.forEach(e => { %><li><%= e.msg %></li><% }) %></ul></div><% } %>
+  <form action="<%= action %>" method="POST" class="stack">
+    <label>Nombre<input name="nombre" maxlength="180" value="<%= product.nombre || '' %>" required></label>
+    <label>Categoría<input name="categoria" maxlength="120" value="<%= product.categoria || '' %>" required></label>
+    <label>Descripción<textarea name="descripcion" rows="5" maxlength="5000"><%= product.descripcion || '' %></textarea></label>
+    <label>Precio (€)<input type="number" name="precio" min="0" step="0.01" value="<%= product.precio ?? '' %>" required></label>
+    <div class="form-actions"><button class="btn" type="submit">Guardar</button><a class="secondary-btn" href="/productos">Cancelar</a></div>
+  </form>
+</section>
+<%- include('../partials/footer') %>

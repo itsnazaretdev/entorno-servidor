@@ -1,0 +1,25 @@
+<%- include('../partials/header', { title, user, message }) %>
+<div class="page-heading">
+  <div><h1>Productos</h1><p class="muted">Consulta el catálogo disponible.</p></div>
+  <% if (user) { %><a class="btn" href="/productos/nuevo">+ Nuevo producto</a><% } %>
+</div>
+<% if (!products.length) { %>
+  <div class="empty"><h2>Aún no hay productos</h2><p>Cuando se añadan, aparecerán aquí.</p><% if (user) { %><a href="/productos/nuevo">Crear el primer producto</a><% } %></div>
+<% } else { %>
+  <div class="product-grid">
+  <% products.forEach(product => { %>
+    <article class="product-card">
+      <span class="category"><%= product.categoria %></span>
+      <h2><%= product.nombre %></h2>
+      <p class="description"><%= product.descripcion || 'Sin descripción.' %></p>
+      <div class="card-bottom"><strong class="price"><%= Number(product.precio).toFixed(2) %> €</strong>
+        <% if (user) { %><div class="actions">
+          <a href="/productos/<%= product.id %>/editar">Editar</a>
+          <form action="/productos/<%= product.id %>?_method=DELETE" method="POST" onsubmit="return confirm('¿Eliminar este producto?')"><button class="danger-link" type="submit">Eliminar</button></form>
+        </div><% } %>
+      </div>
+    </article>
+  <% }) %>
+  </div>
+<% } %>
+<%- include('../partials/footer') %>

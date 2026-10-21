@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> | Catálogo</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/productos">Mi catálogo</a>
+  <nav>
+    <a href="/productos">Productos</a>
+    <% if (user) { %>
+      <span class="welcome">Hola, <%= user.name %></span>
+      <form action="/logout" method="POST" class="inline"><button class="link-button" type="submit">Cerrar sesión</button></form>
+    <% } else { %><a href="/login">Iniciar sesión</a><% } %>
+  </nav>
+</header>
+<main class="container">
+  <% if (message) { %><div class="alert <%= message.type %>"><%= message.text %></div><% } %>
