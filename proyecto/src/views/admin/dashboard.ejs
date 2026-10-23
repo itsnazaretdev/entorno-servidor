@@ -1,0 +1,48 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<section class="admin-head">
+  <div>
+    <h1>Panel de administración</h1>
+    <p class="muted">Sesión iniciada como <strong><%= user.email %></strong></p>
+  </div>
+  <a href="/admin/productos/nuevo" class="btn">+ Nuevo producto</a>
+</section>
+
+<% if (products.length === 0) { %>
+  <p class="empty">No hay productos. Crea el primero.</p>
+<% } else { %>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th class="num">Precio</th>
+          <th class="num">Stock</th>
+          <th class="actions-col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% products.forEach((product) => { %>
+          <tr>
+            <td>
+              <a href="/productos/<%= product.id %>"><%= product.name %></a>
+              <span class="id mono"><%= product.id %></span>
+            </td>
+            <td class="num"><%= product.price.toFixed(2).replace('.', ',') %> €</td>
+            <td class="num"><%= product.stock %></td>
+            <td class="actions">
+              <a href="/admin/productos/<%= product.id %>/editar" class="btn btn-small btn-soft">Editar</a>
+              <form action="/admin/productos/<%= product.id %>?_method=DELETE" method="POST"
+                    class="inline-form" data-confirm="¿Eliminar &quot;<%= product.name %>&quot;? No se puede deshacer.">
+                <button type="submit" class="btn btn-small btn-danger">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>

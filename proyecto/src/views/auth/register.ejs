@@ -1,0 +1,26 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<section class="auth-box">
+  <h1>Crear cuenta</h1>
+  <p class="muted">Las cuentas nuevas tienen permisos de administración.</p>
+
+  <%- include('../partials/form-errors') %>
+
+  <form action="/register" method="POST" class="form" novalidate>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" value="<%= old.email || '' %>" autocomplete="email" required>
+
+    <label for="password">Contraseña <span class="hint">(mínimo 8 caracteres)</span></label>
+    <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" required>
+
+    <label for="confirmPassword">Repite la contraseña</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" required>
+
+    <button type="submit" class="btn btn-full">Crear cuenta</button>
+  </form>
+
+  <p class="muted small">¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
+</section>
+
+<%- include('../partials/footer') %>
