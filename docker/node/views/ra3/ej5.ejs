@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 5 - Funciones</title>
+</head>
+<body>
+    <h1>Catálogo</h1>
+
+    <% for (let i = 0; i < libros.length; i++) { %>
+        <div>
+            <h2><%= libros[i].titulo %></h2>
+            <p>Autor: <%= libros[i].autor %></p>
+            <p>Precio con IVA: <%= precioConIva(libros[i]) %> €</p>
+            <p>Estado: <%= estadoLibro(libros[i]) %></p>
+        </div>
+    <% } %>
+</body>
+</html>

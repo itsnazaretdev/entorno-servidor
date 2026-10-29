@@ -8,6 +8,10 @@ const disponible = true;
 
 app.set("view engine", "ejs");
 
+app.get("/", (req, res) => {
+  res.render("saludo");
+});
+
 app.get("/producto", (req, res) => {
   res.render("producto", {
     nombre: "Teclado mecanico",
@@ -207,6 +211,106 @@ app.get("/ra2/bloque3/ej11", (req, res) => {
   };
 
   res.render("ra2/bloque3/ej11", { libro });
+});
+
+//RA3 BLOQUE 1-------------------------------------------
+const libros = [
+    { titulo: "El Hobbit", autor: "J.R.R. Tolkien", precioBase: 15.00, disponible: true, oferta: true },
+    { titulo: "1984", autor: "George Orwell", precioBase: 10.00, disponible: false, oferta: true },
+    { titulo: "Dune", autor: "Frank Herbert", precioBase: 20.00, disponible: true, oferta: false }
+];
+
+// EJERCICIO 1
+app.get("/ra3/ej1", function (req, res) {
+  const libro = libros[0];
+  let estado;
+
+  if (libro.disponible) {
+    estado = "Disponible";
+  } else if (libro.oferta) {
+    estado = "¡En oferta!";
+  } else {
+    estado = "Agotado";
+  }
+
+  res.render("ra3/ej1", { libro: libro, estado: estado });
+});
+
+// EJERCICIO 2 - Salidas tempranas
+app.get("/ra3/ej2", function (req, res) {
+
+  function puedePrestarse(usuario, libro) {
+    if (usuario === null) {
+      return "No se puede: no hay usuario.";
+    }
+    if (!usuario.activo) {
+      return "No se puede: el usuario no está activo.";
+    }
+    if (!libro.disponible) {
+      return "No se puede: el libro no está disponible.";
+    }
+    return "Préstamo aceptado.";
+  }
+
+  const usuarioActivo = { nombre: "Ana", activo: true };
+  const usuarioInactivo = { nombre: "Luis", activo: false };
+
+  res.render("ra3/ej2", {
+    // 1. No hay usuario
+    caso1: puedePrestarse(null, libros[0]),
+    // 2. No está activo
+    caso2: puedePrestarse(usuarioInactivo, libros[0]),
+    // 3. No está disponible
+    caso3: puedePrestarse(usuarioActivo, libros[1]),
+    // Si no pasa nada de lo anterior, se puede prestar
+    caso4: puedePrestarse(usuarioActivo, libros[0]),
+  });
+});
+
+// EJERCICIO 3 - El catálogo con un bucle
+app.get("/ra3/ej3", function (req, res) {
+  // Aquí no hay lógica: el bucle está en el ejs
+  res.render("ra3/ej3", { libros: libros });
+});
+
+// EJERCICIO 4 - Recorrer y contar
+app.get("/ra3/ej4", function (req, res) {
+  let disponibles = 0;
+
+  for (let i = 0; i < libros.length; i++) {
+    if (libros[i].disponible) {
+      disponibles = disponibles + 1;
+    }
+  }
+
+  res.render("ra3/ej4", { libros: libros, disponibles: disponibles, total: libros.length });
+});
+
+// EJERCICIO 5 - Funciones reutilizables
+app.get("/ra3/ej5", function (req, res) {
+  //Devolverá el iva, tomando libro desde lo que le pasamos en el html
+  function precioConIva(libro) {
+    const total = libro.precioBase + libro.precioBase * 0.02;
+    return total.toFixed(2);
+  }
+
+  // Devolverá agotado, en oferta o disponible
+  function estadoLibro(libro) {
+    if (libro.disponible) {
+      return "Disponible";
+    } else if (libro.oferta) {
+      return "¡En oferta!";
+    } else {
+      return "Agotado";
+    }
+  }
+
+  // Le pasamos al ejs los libros y las dos funciones para usarlas en el bucle
+  res.render("ra3/ej5", {
+    libros: libros,
+    precioConIva: precioConIva,
+    estadoLibro: estadoLibro,
+  });
 });
 
 app.listen(3000, "0.0.0.0", () => {
