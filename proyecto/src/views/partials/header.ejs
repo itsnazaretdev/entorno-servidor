@@ -1,0 +1,25 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo">productos<span>.app</span></a>
+
+    <nav class="nav">
+      <a href="/">Catálogo</a>
+      <a href="/api" class="mono">/api</a>
+
+      <% if (locals.user) { %>
+        <a href="/admin">Panel</a>
+        <form action="/logout" method="POST" class="inline-form">
+          <button type="submit" class="link-button">Cerrar sesión</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Iniciar sesión</a>
+        <a href="/register" class="btn btn-small">Registrarse</a>
+      <% } %>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <% if (locals.flash) { %>
+    <p class="flash" role="status"><%= flash %></p>
+  <% } %>

@@ -1,0 +1,11 @@
+<%- include('partials/header', { title, user, message }) %>
+<section class="auth-card">
+  <h1>Iniciar sesión</h1>
+  <p class="muted">Accede para administrar el catálogo.</p>
+  <form action="/login" method="POST" class="stack">
+    <label>Correo electrónico<input type="email" name="email" autocomplete="username" required></label>
+    <label>Contraseña<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn" type="submit">Entrar</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

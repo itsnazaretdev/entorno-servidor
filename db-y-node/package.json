@@ -1,0 +1,24 @@
+{
+  "name": "catalogo-node-ejs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Catálogo de productos con Express, EJS, PostgreSQL y Docker",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "connect-pg-simple": "^10.0.0",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.0.0",
+    "method-override": "^3.0.0",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": { "nodemon": "^3.1.7" }
+}

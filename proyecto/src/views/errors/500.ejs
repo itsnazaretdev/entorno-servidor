@@ -1,0 +1,14 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<section class="error-page">
+  <p class="error-code">500</p>
+  <h1>Algo ha fallado</h1>
+  <p class="muted">Ha ocurrido un error en el servidor. Prueba de nuevo en un momento.</p>
+  <% if (locals.detail) { %>
+    <pre class="error-detail mono"><%= detail %></pre>
+  <% } %>
+  <a href="/" class="btn">Ir al catálogo</a>
+</section>
+
+<%- include('../partials/footer') %>

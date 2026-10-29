@@ -1,0 +1,31 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+
+<a href="/" class="back">← Volver al catálogo</a>
+
+<article class="detail">
+  <div class="detail-image">
+    <img src="<%= product.image_url || '/img/placeholder.svg' %>" alt="<%= product.name %>">
+  </div>
+
+  <div class="detail-info">
+    <h1><%= product.name %></h1>
+    <p class="price big"><%= product.price.toFixed(2).replace('.', ',') %> €</p>
+
+    <% if (product.description) { %>
+      <p class="description"><%= product.description %></p>
+    <% } %>
+
+    <p class="stock <%= product.stock === 0 ? 'out' : '' %>">
+      <%= product.stock > 0 ? product.stock + ' unidades disponibles' : 'Agotado' %>
+    </p>
+
+    <p class="meta mono">id: <%= product.id %></p>
+
+    <% if (locals.user) { %>
+      <a href="/admin/productos/<%= product.id %>/editar" class="btn">Editar producto</a>
+    <% } %>
+  </div>
+</article>
+
+<%- include('../partials/footer') %>
