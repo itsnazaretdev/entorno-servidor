@@ -8,7 +8,8 @@ const methodOverride = require('method-override');
 const pool = require('./db');
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
-const { ensureAdmin } = require('./seed');
+const apiRoutes = require('./routes/api');
+const { ensureAdmin, ensureProducts } = require('./seed');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => res.redirect('/productos'));
 app.use('/', authRoutes);
 app.use('/productos', productRoutes);
+app.use('/api', apiRoutes);
 app.use((req, res) => res.status(404).render('404', { title: 'Página no encontrada' }));
 app.use((err, req, res, next) => {
   console.error(err);
@@ -46,6 +48,7 @@ async function start() {
   if (!process.env.SESSION_SECRET) throw new Error('Define SESSION_SECRET en .env');
   await pool.query('SELECT 1');
   await ensureAdmin();
+  await ensureProducts();
   app.listen(PORT, () => console.log(`Servidor disponible en http://localhost:${PORT}`));
 }
 start().catch(err => { console.error('No se pudo iniciar la aplicación:', err); process.exit(1); });

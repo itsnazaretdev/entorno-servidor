@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <% if (resultados.length === 0) { %>
+        <p>No se encontraron libros.</p>
+    <% } else { %>
+        <% for (let i = 0; i < resultados.length; i++) { %>
+            <div>
+                <h2><%= resultados[i].titulo %></h2>
+                <p>Autor: <%= resultados[i].autor %></p>
+                <p>Género: <%= resultados[i].genero %></p>
+            </div>
+        <% } %>
+    <% } %>
+</body>
+</html>

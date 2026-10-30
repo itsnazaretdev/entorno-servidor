@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 11 - Búsqueda con POST</title>
+</head>
+<body>
+    <h1>Buscar libros (POST)</h1>
+
+    <form action="/ra3/ej11" method="post">
+        <label for="busqueda">Título:</label>
+        <input type="text" id="busqueda" name="busqueda" value="<%= busqueda %>">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <% if (busqueda !== "") { %>
+        <p>Resultados para: <%= busqueda %></p>
+    <% } %>
+
+    <% for (let i = 0; i < resultados.length; i++) { %>
+        <div>
+            <h2><%= resultados[i].titulo %></h2>
+            <p>Autor: <%= resultados[i].autor %></p>
+        </div>
+    <% } %>
+</body>
+</html>

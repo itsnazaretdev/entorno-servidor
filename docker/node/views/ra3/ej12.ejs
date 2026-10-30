@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 12 - Catálogo (Node)</title>
+</head>
+<body>
+    <h1>Catálogo (Node)</h1>
+
+    <form action="/ra3/ej12" method="get">
+        <label for="busqueda">Título:</label>
+        <input type="text" id="busqueda" name="busqueda" value="<%= busqueda %>">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <% if (busqueda !== "") { %>
+        <p>Resultados para: <%= busqueda %></p>
+    <% } %>
+
+    <% if (resultados.length === 0) { %>
+        <p>No se encontraron libros.</p>
+    <% } else { %>
+        <% for (let i = 0; i < resultados.length; i++) { %>
+            <div>
+                <h2><%= resultados[i].titulo %></h2>
+                <p>Autor: <%= resultados[i].autor %></p>
+                <p>Precio: <%= resultados[i].precioBase %> €</p>
+            </div>
+        <% } %>
+    <% } %>
+</body>
+</html>

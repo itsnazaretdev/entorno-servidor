@@ -18,9 +18,11 @@ Aplicación web renderizada en servidor con Express y EJS. Incluye catálogo pú
 4. Abre http://localhost:3000
 
 El usuario administrador se crea automáticamente en el primer arranque si no existe. Sus datos proceden de `ADMIN_NAME`, `ADMIN_EMAIL` y `ADMIN_PASSWORD` del archivo `.env`.
+Si el catálogo está vacío, el primer arranque también añade cuatro productos de ejemplo. No se vuelven a insertar si ya hay productos.
 
 ## Uso
 - `GET /productos`: catálogo público.
+- `GET /api`: catálogo de productos en formato JSON.
 - `GET /login`: formulario de acceso.
 - `POST /login`: autenticación.
 - `POST /logout`: cerrar sesión.
@@ -42,9 +44,20 @@ src/
   db.js
   seed.js
   server.js
+  controllers/
+    authController.js
+    productsController.js
+    README.md
+  models/
+    productModel.js
+    userModel.js
+    README.md
   middleware/auth.js
-  routes/auth.js
-  routes/products.js
+  routes/
+    api.js
+    auth.js
+    products.js
+    README.md
 views/
   login.ejs
   products/

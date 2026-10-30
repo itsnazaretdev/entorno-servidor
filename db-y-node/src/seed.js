@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
-const pool = require('./db');
+const productModel = require('./models/productModel');
+const userModel = require('./models/userModel');
 
 async function ensureAdmin() {
   const name = process.env.ADMIN_NAME || 'Administrador';
@@ -8,11 +9,17 @@ async function ensureAdmin() {
   if (!password || password.length < 12) {
     throw new Error('ADMIN_PASSWORD debe tener al menos 12 caracteres. Configúralo en .env');
   }
-  const exists = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
-  if (exists.rowCount === 0) {
-    const hash = await bcrypt.hash(password, 12);
-    await pool.query('INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3)', [name, email, hash]);
-    console.log(`Usuario administrador creado: ${email}`);
-  }
+  const exists = await userModel.findByEmail(email);
+  if (exists) return;
+  const passwordHash = await bcrypt.hash(password, 12);
+  await userModel.create({ name, email, passwordHash });
+  console.log(`Usuario administrador creado: ${email}`);
 }
-module.exports = { ensureAdmin };
+
+async function ensureProducts() {
+  if (await productModel.hasAny()) return;
+  await productModel.createExamples();
+  console.log('Productos de ejemplo creados.');
+}
+
+module.exports = { ensureAdmin, ensureProducts };

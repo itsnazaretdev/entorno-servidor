@@ -8,6 +8,9 @@ const disponible = true;
 
 app.set("view engine", "ejs");
 
+// Para que Express pueda leer los datos de formularios enviados con POST
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.render("saludo");
 });
@@ -311,6 +314,179 @@ app.get("/ra3/ej5", function (req, res) {
     precioConIva: precioConIva,
     estadoLibro: estadoLibro,
   });
+});
+
+//-----------------------------------------------------------
+// EJERCICIO 6 - Formulario de búsqueda
+app.get("/ra3/ej6", function (req, res) {
+  res.render("ra3/ej6");
+});
+
+
+// EJERCICIO 7 - Recoger el dato con GET
+app.get("/ra3/ej7", function (req, res) {
+  // Lo que se escribe en el formulario llega en la URL: /ra3/ej7?busqueda=quijote
+  let busqueda = req.query.busqueda;
+
+  // Si todavía no se ha buscado nada, no llega nada (undefined)
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  res.render("ra3/ej7", { busqueda: busqueda });
+});
+
+
+// EJERCICIO 8 - Buscar de verdad
+app.get("/ra3/ej8", function (req, res) {
+  let busqueda = req.query.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  // Array vacío donde iremos guardando los libros que coinciden
+  let resultados = [];
+
+  for (let i = 0; i < libros.length; i++) {
+    // Pasamos los dos textos a minúsculas para que "Dune" y "dune" coincidan
+    let titulo = libros[i].titulo.toLowerCase();
+    let termino = busqueda.toLowerCase();
+
+    // includes comprueba si el título contiene el término buscado
+    if (titulo.includes(termino)) {
+      resultados.push(libros[i]);
+    }
+  }
+
+  res.render("ra3/ej8", { busqueda: busqueda, resultados: resultados });
+});
+
+
+// EJERCICIO 9 - Filtro por género
+app.get("/ra3/ej9", function (req, res) {
+  let busqueda = req.query.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  let genero = req.query.genero;
+  if (genero === undefined) {
+    genero = "";
+  }
+
+  let resultados = [];
+
+  for (let i = 0; i < libros.length; i++) {
+    let titulo = libros[i].titulo.toLowerCase();
+    let termino = busqueda.toLowerCase();
+
+    // Condición 1: el título contiene lo buscado
+    let coincideTitulo = titulo.includes(termino);
+
+    // Condición 2: no se ha elegido género, o el género es el elegido
+    let coincideGenero = false;
+    if (genero === "") {
+      coincideGenero = true;
+    } else if (libros[i].genero === genero) {
+      coincideGenero = true;
+    }
+
+    // Solo lo añadimos si cumple las dos
+    if (coincideTitulo && coincideGenero) {
+      resultados.push(libros[i]);
+    }
+  }
+
+  res.render("ra3/ej9", { busqueda: busqueda, genero: genero, resultados: resultados });
+});
+
+
+// EJERCICIO 10 - Sin resultados 
+// La lógica es la misma que en el 9. El cambio está en el ejs.
+app.get("/ra3/ej10", function (req, res) {
+  let busqueda = req.query.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  let genero = req.query.genero;
+  if (genero === undefined) {
+    genero = "";
+  }
+
+  let resultados = [];
+
+  for (let i = 0; i < libros.length; i++) {
+    let titulo = libros[i].titulo.toLowerCase();
+    let termino = busqueda.toLowerCase();
+
+    let coincideTitulo = titulo.includes(termino);
+
+    let coincideGenero = false;
+    if (genero === "") {
+      coincideGenero = true;
+    } else if (libros[i].genero === genero) {
+      coincideGenero = true;
+    }
+
+    if (coincideTitulo && coincideGenero) {
+      resultados.push(libros[i]);
+    }
+  }
+
+  res.render("ra3/ej10", { busqueda: busqueda, genero: genero, resultados: resultados });
+});
+
+
+//------------------------------------------------------------
+// EJERCICIO 11 - GET: cuando entras en la página, se muestra el formulario y todos los libros
+app.get("/ra3/ej11", function (req, res) {
+  res.render("ra3/ej11", { busqueda: "", resultados: libros });
+});
+
+// EJERCICIO 11 - POST: cuando envías el formulario
+app.post("/ra3/ej11", function (req, res) {
+  // Con POST el dato no viene en req.query, viene en req.body
+  let busqueda = req.body.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  let resultados = [];
+
+  for (let i = 0; i < libros.length; i++) {
+    let titulo = libros[i].titulo.toLowerCase();
+    let termino = busqueda.toLowerCase();
+
+    if (titulo.includes(termino)) {
+      resultados.push(libros[i]);
+    }
+  }
+
+  res.render("ra3/ej11", { busqueda: busqueda, resultados: resultados });
+});
+
+// EJERCICIO 12 - Catálogo con bucle + búsqueda (versión Node)
+app.get("/ra3/ej12", function (req, res) {
+  // 1. Recoger el dato del formulario (GET)
+  let busqueda = req.query.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  // 2. Recorrer el array y quedarnos con los que coinciden
+  let resultados = [];
+
+  for (let i = 0; i < libros.length; i++) {
+    let titulo = libros[i].titulo.toLowerCase();
+    let termino = busqueda.toLowerCase();
+
+    if (titulo.includes(termino)) {
+      resultados.push(libros[i]);
+    }
+  }
+
+  res.render("ra3/ej12", { busqueda: busqueda, resultados: resultados });
 });
 
 app.listen(3000, "0.0.0.0", () => {
