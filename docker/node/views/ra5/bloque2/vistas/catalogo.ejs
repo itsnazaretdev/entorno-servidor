@@ -1,0 +1,51 @@
+<%# EJERCICIO 6 - VISTA: solo muestra.
+    Recibe del controlador: nombreApp, busqueda, genero, generos, resultados, disponibles %>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title><%= nombreApp %></title>
+</head>
+<body>
+    <h1><%= nombreApp %></h1>
+
+    <form action="/ra5/catalogo" method="get">
+        <label for="busqueda">Título:</label>
+        <input type="text" id="busqueda" name="busqueda" value="<%= busqueda %>">
+
+        <%# El select se construye desde la lista generos, no está escrito a mano %>
+        <label for="genero">Género:</label>
+        <select id="genero" name="genero">
+            <option value="">Todos</option>
+            <% for (let i = 0; i < generos.length; i++) { %>
+                <option value="<%= generos[i] %>" <% if (generos[i] === genero) { %>selected<% } %>>
+                    <%= generos[i] %>
+                </option>
+            <% } %>
+        </select>
+
+        <button type="submit">Buscar</button>
+    </form>
+
+    <% if (resultados.length === 0) { %>
+        <p>No se encontraron libros.</p>
+    <% } else { %>
+        <p><%= disponibles %> de <%= resultados.length %> disponibles</p>
+
+        <% for (let i = 0; i < resultados.length; i++) { %>
+            <div>
+                <h2><%= resultados[i].titulo %></h2>
+                <p>Autor: <%= resultados[i].autor %></p>
+                <p>Género: <%= resultados[i].genero %></p>
+                <p>Precio con IVA: <%= resultados[i].precioConIva() %> €</p>
+
+                <% if (resultados[i].estaDisponible()) { %>
+                    <p>Disponible</p>
+                <% } else { %>
+                    <p>Agotado</p>
+                <% } %>
+            </div>
+        <% } %>
+    <% } %>
+</body>
+</html>

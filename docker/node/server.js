@@ -1,6 +1,11 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import { Libro } from "./Libro.js";
+import { LibroRepository } from "./LibroRepository.js";
+import { config } from "./capas/config.js";
+import { LibroRepository } from "./capas/LibroRepository.js";
+import { LibroService } from "./capas/LibroService.js";
 
 const app = express();
 
@@ -684,4 +689,111 @@ app.get("/ra4/ej8_panel", requiereAdmin, function (req, res) {
 
 app.listen(3000, "0.0.0.0", () => {
   console.log("Servidor funcionando en http://localhost:3000");
+});
+
+//-------------------------------------------------------------------
+//RA5 BLOQUE 1
+//-------------------------------------------------------------------
+// EJERCICIO 1 - Catálogo con bucle + búsqueda (versión Node)
+
+// ==================== [DATOS] ====================
+// const libros = [
+//     { titulo: "El Hobbit", autor: "J.R.R. Tolkien", precioBase: 15.00, disponible: true, oferta: true },
+//     { titulo: "1984", autor: "George Orwell", precioBase: 10.00, disponible: false, oferta: true },
+//     { titulo: "Dune", autor: "Frank Herbert", precioBase: 20.00, disponible: true, oferta: false }
+// ];
+
+// ==================== [LÓGICA] ====================
+app.get("/ra3/ej12", function (req, res) {
+  // 1. Recoger el dato del formulario (GET)
+  let busqueda = req.query.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  // 2. Recorrer el array y quedarnos con los que coinciden
+  let resultados = [];
+
+  for (let i = 0; i < libros.length; i++) {
+    let titulo = libros[i].titulo.toLowerCase();
+    let termino = busqueda.toLowerCase();
+
+    if (titulo.includes(termino)) {
+      resultados.push(libros[i]);
+    }
+  }
+
+  res.render("ra3/ej12", { busqueda: busqueda, resultados: resultados });
+});
+
+// EJERCICIO 2 - Catálogo con objetos Libro
+
+// Arriba del todo, con los demás import
+// import { Libro } from "./Libro.js";
+
+app.get("/ra5/ej2", function (req, res) {
+  const libros = [
+    new Libro("El Hobbit", "J.R.R. Tolkien", 15.00, true),
+    new Libro("1984", "George Orwell", 10.00, false),
+    new Libro("Dune", "Frank Herbert", 20.00, true)
+  ];
+
+  res.render("ra5/ej2", { libros: libros });
+});
+
+// EJERCICIO 3 - El catálogo pidiendo los datos al Repository
+// Arriba del todo, con los demás import
+// import { LibroRepository } from "./LibroRepository.js";
+
+app.get("/ra5/ej3", function (req, res) {
+  const repositorio = new LibroRepository();
+
+  let busqueda = req.query.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  // Ya no recorremos ningún array aquí: se lo pedimos al repositorio
+  const resultados = repositorio.buscarPorTitulo(busqueda);
+
+  res.render("ra5/ej3", { busqueda: busqueda, resultados: resultados });
+});
+
+//-------------------------------------------------------------------
+//RA4 BLOQUE 1
+//-------------------------------------------------------------------
+// Arriba del todo, con los demás import
+// import { config } from "./capas/config.js";
+// import { LibroRepository } from "./capas/LibroRepository.js";
+// import { LibroService } from "./capas/LibroService.js";
+
+// EJERCICIO 5 - CONTROLADOR: solo coordina.
+// 1. Recibe la petición   2. Llama al servicio   3. Pasa los datos a la vista
+app.get("/ra5/catalogo", function (req, res) {
+  const repositorio = new LibroRepository();
+  const servicio = new LibroService(repositorio, config.librosPorPagina);
+
+  // 1. Recibir la petición
+  let busqueda = req.query.busqueda;
+  if (busqueda === undefined) {
+    busqueda = "";
+  }
+
+  let genero = req.query.genero;
+  if (genero === undefined) {
+    genero = "";
+  }
+
+  // 2. Pedir los datos ya preparados al servicio
+  const resultados = servicio.filtrar(busqueda, genero);
+
+  // 3. Pasarlos a la vista
+  res.render("ra5/catalogo", {
+    nombreApp: config.nombre,
+    busqueda: busqueda,
+    genero: genero,
+    generos: servicio.obtenerGeneros(),
+    resultados: resultados,
+    disponibles: servicio.contarDisponibles(resultados)
+  });
 });
