@@ -1,8 +1,4 @@
 <?php
-//   [DATOS]        = dónde están guardados los libros
-//   [LÓGICA]       = reglas y cálculos (recoger la búsqueda, filtrar)
-//   [PRESENTACIÓN] = el HTML que ve el usuario
-
 
 // ==================== [DATOS] ====================
 // El array de libros será el que contenga todos los datos que necesitamos
@@ -11,8 +7,6 @@ $libros = [
     ["titulo" => "1984", "autor" => "George Orwell", "precioBase" => 10.00, "disponible" => false, "oferta" => true, "genero" => "Distopía"],
     ["titulo" => "Dune", "autor" => "Frank Herbert", "precioBase" => 20.00, "disponible" => true, "oferta" => false, "genero" => "Ciencia ficción"]
 ];
-
-
 
 // ==================== [LÓGICA] ====================
 // Recoger el dato del formulario

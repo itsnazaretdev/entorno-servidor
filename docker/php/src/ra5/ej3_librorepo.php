@@ -1,5 +1,4 @@
 <?php
-// EJERCICIO 3 - El catálogo pidiendo los datos al Repository
 require_once "LibroRepository.php";
 
 // Creamos el repositorio: es quien tiene los libros

@@ -1,7 +1,4 @@
 <?php
-// EJERCICIO 7 - CONFIGURACIÓN
-// Lee los parámetros del archivo .env en lugar de tenerlos escritos por el código
-
 $env = parse_ini_file(__DIR__ . "/.env");
 
 $config = [

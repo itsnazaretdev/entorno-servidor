@@ -2,10 +2,10 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import { Libro } from "./Libro.js";
-import { LibroRepository } from "./LibroRepository.js";
-import { config } from "./capas/config.js";
-import { LibroRepository } from "./capas/LibroRepository.js";
-import { LibroService } from "./capas/LibroService.js";
+import { LibroRepository1 } from "./LibroRepository1.js";
+import { config } from "./views/ra5/bloque2/capas/config.js";
+import { LibroRepository } from "./views/ra5/bloque2/capas/LibroRepository.js";
+import { LibroService } from "./views/ra5/bloque2/capas/LibroService.js";
 
 const app = express();
 
@@ -746,7 +746,7 @@ app.get("/ra5/ej2", function (req, res) {
 // import { LibroRepository } from "./LibroRepository.js";
 
 app.get("/ra5/ej3", function (req, res) {
-  const repositorio = new LibroRepository();
+  const repositorio = new LibroRepository1();
 
   let busqueda = req.query.busqueda;
   if (busqueda === undefined) {
@@ -763,9 +763,9 @@ app.get("/ra5/ej3", function (req, res) {
 //RA4 BLOQUE 1
 //-------------------------------------------------------------------
 // Arriba del todo, con los demás import
-// import { config } from "./capas/config.js";
-// import { LibroRepository } from "./capas/LibroRepository.js";
-// import { LibroService } from "./capas/LibroService.js";
+// import { config } from "./views/ra5/bloque2/capas/config.js";
+// import { LibroRepository } from "./views/ra5/bloque2/capas/LibroRepository.js";
+// import { LibroService } from "./views/ra5/bloque2/capas/LibroService.js";
 
 // EJERCICIO 5 - CONTROLADOR: solo coordina.
 // 1. Recibe la petición   2. Llama al servicio   3. Pasa los datos a la vista
@@ -788,7 +788,7 @@ app.get("/ra5/catalogo", function (req, res) {
   const resultados = servicio.filtrar(busqueda, genero);
 
   // 3. Pasarlos a la vista
-  res.render("ra5/catalogo", {
+  res.render("ra5/bloque2/vistas/catalogo", {
     nombreApp: config.nombre,
     busqueda: busqueda,
     genero: genero,

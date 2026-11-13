@@ -4,7 +4,7 @@
 
 import { Libro } from "./Libro.js";
 
-export class LibroRepository {
+export class LibroRepository1 {
   constructor() {
     this.libros = [
       new Libro("El Hobbit", "J.R.R. Tolkien", 15.00, true),

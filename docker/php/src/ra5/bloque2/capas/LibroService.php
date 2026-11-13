@@ -1,7 +1,4 @@
 <?php
-// EJERCICIO 4 - SERVICIO: aquí vive la lógica de negocio (reglas, filtros, cálculos).
-// No sabe dónde están los libros: se los pide al Repository.
-// No sabe nada de HTML ni de $_GET.
 
 require_once "LibroRepository.php";
 
@@ -17,9 +14,6 @@ class LibroService
         $this->librosPorPagina = $librosPorPagina;
     }
 
-    // Regla de búsqueda: el título contiene lo buscado y, si se ha elegido
-    // un género, el libro es de ese género. Devuelve como máximo
-    // los libros por página que diga la configuración.
     public function filtrar(string $busqueda, string $genero): array
     {
         $todos = $this->repositorio->obtenerTodos();

@@ -1,5 +1,4 @@
 <?php
-// ENTIDAD Libro (ejercicio 2, ahora con tipos y con género para el ejercicio 6)
 
 class Libro
 {

@@ -1,6 +1,4 @@
 <?php
-// REPOSITORY (ejercicio 3): solo guarda y entrega los libros.
-// No decide nada, no filtra por reglas: eso es cosa del servicio.
 
 require_once "Libro.php";
 

@@ -1,5 +1,4 @@
 <?php
-// EJERCICIO 6 - VISTA: solo muestra.
 
 /** @var string $nombreApp */
 /** @var string $busqueda */
