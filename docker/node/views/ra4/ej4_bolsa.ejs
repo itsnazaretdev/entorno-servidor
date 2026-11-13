@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 4 - Mi bolsa</title>
+</head>
+<body>
+    <%- include("ej4_menu") %>
+
+    <h1>Mi bolsa de préstamos</h1>
+
+    <% if (bolsa.length === 0) { %>
+        <p>Tu bolsa está vacía.</p>
+    <% } else { %>
+        <ul>
+            <% for (let i = 0; i < bolsa.length; i++) { %>
+                <li><%= bolsa[i] %></li>
+            <% } %>
+        </ul>
+    <% } %>
+</body>
+</html>

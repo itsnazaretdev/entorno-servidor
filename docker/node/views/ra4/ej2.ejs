@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 2 - Cookie y localStorage</title>
+</head>
+<body>
+    <h1>Buscar libros</h1>
+
+    <form action="/ra4/ej2" method="get">
+        <label for="busqueda">Título:</label>
+        <input type="text" id="busqueda" name="busqueda">
+        <button type="submit">Buscar</button>
+    </form>
+
+    <h2>Con cookie (la lee el servidor)</h2>
+    <% if (ultimaBusqueda !== "") { %>
+        <p>Tu última búsqueda: <%= ultimaBusqueda %></p>
+    <% } else { %>
+        <p>Todavía no has buscado nada.</p>
+    <% } %>
+
+    <h2>Con localStorage (lo lee JavaScript, en el navegador)</h2>
+    <p id="mensaje"></p>
+
+    <script>
+        // Miramos si en la URL viene una búsqueda (?busqueda=...)
+        const parametros = new URLSearchParams(window.location.search);
+        const busqueda = parametros.get("busqueda");
+
+        // Si viene, la guardamos en localStorage
+        if (busqueda !== null) {
+            localStorage.setItem("ultimaBusqueda", busqueda);
+        }
+
+        // Leemos lo que haya guardado
+        const guardada = localStorage.getItem("ultimaBusqueda");
+        const mensaje = document.getElementById("mensaje");
+
+        if (guardada !== null) {
+            mensaje.textContent = "Tu última búsqueda: " + guardada;
+        } else {
+            mensaje.textContent = "Todavía no has buscado nada.";
+        }
+    </script>
+</body>
+</html>

@@ -1,4 +1,6 @@
 import express from "express";
+import cookieParser from "cookie-parser";
+import session from "express-session";
 
 const app = express();
 
@@ -10,6 +12,16 @@ app.set("view engine", "ejs");
 
 // Para que Express pueda leer los datos de formularios enviados con POST
 app.use(express.urlencoded({ extended: true }));
+
+// Para poder leer las cookies con req.cookies
+app.use(cookieParser());
+
+// Para poder usar sesiones con req.session
+app.use(session({
+  secret: "una-frase-secreta",
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.get("/", (req, res) => {
   res.render("saludo");
@@ -216,7 +228,9 @@ app.get("/ra2/bloque3/ej11", (req, res) => {
   res.render("ra2/bloque3/ej11", { libro });
 });
 
-//RA3 BLOQUE 1-------------------------------------------
+//-------------------------------------------------------------------
+//RA3 BLOQUE 1
+//-------------------------------------------------------------------
 const libros = [
     { titulo: "El Hobbit", autor: "J.R.R. Tolkien", precioBase: 15.00, disponible: true, oferta: true },
     { titulo: "1984", autor: "George Orwell", precioBase: 10.00, disponible: false, oferta: true },
@@ -439,11 +453,6 @@ app.get("/ra3/ej10", function (req, res) {
 
 
 //------------------------------------------------------------
-// EJERCICIO 11 - GET: cuando entras en la página, se muestra el formulario y todos los libros
-app.get("/ra3/ej11", function (req, res) {
-  res.render("ra3/ej11", { busqueda: "", resultados: libros });
-});
-
 // EJERCICIO 11 - POST: cuando envías el formulario
 app.post("/ra3/ej11", function (req, res) {
   // Con POST el dato no viene en req.query, viene en req.body
@@ -487,6 +496,190 @@ app.get("/ra3/ej12", function (req, res) {
   }
 
   res.render("ra3/ej12", { busqueda: busqueda, resultados: resultados });
+});
+
+//-------------------------------------------------------------------
+//RA4 BLOQUE 1
+//-------------------------------------------------------------------
+
+// EJERCICIO 1 - HTTP no recuerda
+app.get("/ra4/ej1", function (req, res) {
+  // La variable se crea DENTRO de la ruta: nace de cero en cada petición
+  let contador = 0;
+  contador = contador + 1;
+
+  res.render("r4/ej1", { contador: contador });
+});
+
+// EJERCICIO 2 - Guardar la última búsqueda en una cookie
+app.get("/ra4/ej2", function (req, res) {
+  // Si llega una búsqueda, la guardamos en una cookie durante 1 hora
+  // maxAge va en milisegundos: 60 * 60 * 1000 = 1 hora
+  if (req.query.busqueda !== undefined) {
+    res.cookie("ultimaBusqueda", req.query.busqueda, { maxAge: 60 * 60 * 1000 });
+  }
+
+  // Leemos la cookie (el navegador la envía en cada petición)
+  let ultimaBusqueda = req.cookies.ultimaBusqueda;
+  if (ultimaBusqueda === undefined) {
+    ultimaBusqueda = "";
+  }
+
+  res.render("r4/ej2", { ultimaBusqueda: ultimaBusqueda });
+});
+
+
+// EJERCICIO 3 - Página 1 con sesión
+app.get("/ra4/ej3_1", function (req, res) {
+  // Si el contador todavía no existe en la sesión, lo creamos a 0
+  if (req.session.visitas === undefined) {
+    req.session.visitas = 0;
+  }
+
+  req.session.visitas = req.session.visitas + 1;
+
+  res.render("ra4/ej3_1", { visitas: req.session.visitas });
+});
+
+// EJERCICIO 3 - Página 2 con sesión (comparte el mismo contador)
+app.get("/ra4/ej3_2", function (req, res) {
+  if (req.session.visitas === undefined) {
+    req.session.visitas = 0;
+  }
+
+  req.session.visitas = req.session.visitas + 1;
+
+  res.render("ra4/ej3_2", { visitas: req.session.visitas });
+});
+
+// EJERCICIO 4 - Abrir directamente el catálogo
+app.get("/ra4/ej4", function (req, res) {
+  res.redirect("/ra4/ej4/catalogo");
+});
+
+// EJERCICIO 4 - Catálogo: ver los libros
+app.get("/ra4/ej4/catalogo", function (req, res) {
+  // Si la bolsa no existe todavía, la creamos vacía
+  if (req.session.bolsa === undefined) {
+    req.session.bolsa = [];
+  }
+
+  res.render("ra4/ej4_catalogo", { libros: libros, bolsa: req.session.bolsa, mensaje: "" });
+});
+
+// EJERCICIO 4 - Catálogo: apartar un libro (lo envía el botón "Apartar")
+app.post("/ra4/ej4/catalogo", function (req, res) {
+  if (req.session.bolsa === undefined) {
+    req.session.bolsa = [];
+  }
+
+  let titulo = req.body.titulo;
+  let mensaje = "";
+
+  // Solo lo añadimos si no estaba ya
+  if (req.session.bolsa.includes(titulo)) {
+    mensaje = "Ese libro ya está en tu bolsa.";
+  } else {
+    req.session.bolsa.push(titulo);
+    mensaje = "Has apartado: " + titulo;
+  }
+
+  res.render("ra4/ej4_catalogo", { libros: libros, bolsa: req.session.bolsa, mensaje: mensaje });
+});
+
+// EJERCICIO 4 - Ver la bolsa
+app.get("/ra4/ej4/bolsa", function (req, res) {
+  if (req.session.bolsa === undefined) {
+    req.session.bolsa = [];
+  }
+
+  res.render("ra4/ej4_bolsa", { bolsa: req.session.bolsa });
+});
+
+// EJERCICIO 5 - Usuarios en memoria: cada uno tiene un rol
+const usuarios = [
+  { nombre: "ana", contrasena: "1234", rol: "usuario" },
+  { nombre: "luis", contrasena: "5678", rol: "admin" }
+];
+
+// Mostrar la página
+app.get("/ra4/ej5_login", function (req, res) {
+  res.render("ra4/ej5_login", { usuario: req.session.usuario, rol: req.session.rol, mensaje: "" });
+});
+
+// Comprobar los datos del formulario
+app.post("/ra4/ej5_login", function (req, res) {
+  let nombre = req.body.nombre;
+  let contrasena = req.body.contrasena;
+  let mensaje = "";
+
+  for (let i = 0; i < usuarios.length; i++) {
+    if (usuarios[i].nombre === nombre && usuarios[i].contrasena === contrasena) {
+      // Correcto: guardamos el usuario y su rol en la sesión
+      req.session.usuario = nombre;
+      req.session.rol = usuarios[i].rol;
+    }
+  }
+
+  if (req.session.usuario === undefined) {
+    mensaje = "Usuario o contraseña incorrectos.";
+  }
+
+  res.render("ra4/ej5_login", { usuario: req.session.usuario, rol: req.session.rol, mensaje: mensaje });
+});
+
+
+// EJERCICIO 6 - Cerrar sesión
+app.get("/ra4/ej6_logout", function (req, res) {
+  // Destruimos la sesión y, cuando termina, volvemos al login
+  req.session.destroy(function () {
+    res.redirect("/ra4/ej5_login");
+  });
+});
+
+
+// EJERCICIO 7 - Guardián (middleware)
+// Si no has iniciado sesión, te manda al login
+// Si has iniciado sesión, next() te deja pasar
+function requiereLogin(req, res, next) {
+  if (req.session.usuario === undefined) {
+    res.redirect("/ra4/ej5_login");
+  } else {
+    next();
+  }
+}
+
+// La bolsa, protegida: el guardián va entre la URL y la función
+app.get("/ra4/ej7_bolsa", requiereLogin, function (req, res) {
+  if (req.session.bolsa === undefined) {
+    req.session.bolsa = [];
+  }
+
+  res.render("ra4/ej7_bolsa", { usuario: req.session.usuario, bolsa: req.session.bolsa });
+});
+
+
+// EJERCICIO 8 - Guardián solo para administradores
+function requiereAdmin(req, res, next) {
+  // 1. Si no has iniciado sesión, al login
+  if (req.session.usuario === undefined) {
+    res.redirect("/ra4/ej5_login");
+    return;
+  }
+
+  // 2. Si has iniciado sesión pero no eres admin, no puedes pasar
+  if (req.session.rol !== "admin") {
+    res.send("<p>No tienes permiso para ver esta página.</p><a href='/ra4/ej5_login'>Volver</a>");
+    return;
+  }
+
+  // 3. Si eres admin, puedes pasar
+  next();
+}
+
+// El panel, protegido solo para admin
+app.get("/ra4/ej8_panel", requiereAdmin, function (req, res) {
+  res.render("ra4/ej8_panel", { usuario: req.session.usuario, libros: libros });
 });
 
 app.listen(3000, "0.0.0.0", () => {
